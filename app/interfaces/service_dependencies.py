@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Date     : 2026/01/31
+# @Author   : Gelin
+# @File     : service_dependencies.py
+
+
+import logging
+from functools import lru_cache
+
+from fastapi.params import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.application.services.app_config_service import AppConfigService
+from app.application.services.status_service import StatusService
+from app.infrastructure.external.health_checker.postgres_health_checker import PostgresHealthChecker
+from app.infrastructure.external.health_checker.redis_health_checker import RedisHealthChecker
+from app.infrastructure.repositories.file_app_config_repository import FileAppConfigRepository
+from app.infrastructure.storage.postgres import get_db_session
+from app.infrastructure.storage.redis import RedisClient, get_redis
+from core.config import get_settings
+
+
+logger = logging.getLogger(__name__)
+settings = get_settings()
+
+
+@lru_cache()
+def get_app_config_service() -> AppConfigService:
+    """获取应用配置服务"""
+    # 1. 获取数据仓库并打印
+    logger.info("加载获取AppConfigService")
+    file_app_config_repository = FileAppConfigRepository(settings.app_config_filepath)
+
+    # 2. 实例化AppConfigService
+    return AppConfigService(app_config_respository=file_app_config_repository)
+
+
+@lru_cache()
+def get_status_service(
+        db_session: AsyncSession = Depends(get_db_session),
+        redis_client: RedisClient = Depends(get_redis),
+) -> StatusService:
+    """获取状态服务"""
+    # 1.初始化posgres和redis健康检查
+    postgres_checker = PostgresHealthChecker(db_session=db_session)
+    redis_checker = RedisHealthChecker(redis_client=redis_client)
+
+    # 2.创建服务返回
+    logger.info("加载获取StatusService")
+    return StatusService(checkers=[postgres_checker, redis_checker])
+
+

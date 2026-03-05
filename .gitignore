@@ -1,0 +1,40 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# 忽略 pytest测试缓存
+.pytest_cache/
+tmp/.pytest_cache/
+
+# 忽略IDE缓存
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.venv
+venv/
+ENV/
+env/

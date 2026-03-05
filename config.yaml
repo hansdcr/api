@@ -10,3 +10,5 @@ agent_config:
   max_search_results: 10
 mcp_config:
   mcpServers: {}
+a2a_config:
+  a2a_servers: []

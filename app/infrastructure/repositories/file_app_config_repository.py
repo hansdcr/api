@@ -10,7 +10,7 @@ import yaml
 from typing import Optional
 from pathlib import Path
 from app.domain.repositories.app_config_repository import AppConfigRepository
-from app.domain.models.app_config import AppConfig, LLMConfig, AgentConfig, MCPConfig
+from app.domain.models.app_config import AppConfig, LLMConfig, AgentConfig, MCPConfig, A2AConfig
 from app.application.errors.exceptions import ServerRequestError
 
 logger = logging.getLogger(__name__)
@@ -34,7 +34,8 @@ class FileAppConfigRepository(AppConfigRepository):
             default_app_config = AppConfig(
                 llm_config=LLMConfig(),
                 agent_config=AgentConfig(),
-                mcp_config=MCPConfig()
+                mcp_config=MCPConfig(),
+                a2a_config=A2AConfig(),
             )
             self.save(default_app_config)
     

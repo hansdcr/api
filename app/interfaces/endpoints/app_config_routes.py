@@ -142,7 +142,7 @@ async def delete_mcp_server(
 )
 async def set_mcp_server_enabled(
         server_name: str,
-        enabled: bool = Body(...), # post请求过来的body
+        enabled: bool = Body(...,embed=True), # post请求过来的body
         app_config_service: AppConfigService = Depends(get_app_config_service)
 ) -> Response[Optional[Dict]]:
     """根据传递的server_name+enabled更新服务的启用状态"""

@@ -10,6 +10,9 @@ import uuid
 from enum import Enum
 from pydantic import BaseModel,Field
 from typing import Literal, List, Any, Union, Optional, Dict
+
+from sqlalchemy.sql.annotation import Annotated
+
 from .plan import Plan,Step
 from .file import File
 from .tool_result import ToolResult
@@ -107,13 +110,16 @@ class DoneEvent(BaseEvent):
 
 
 # 定义应用事件类型声明
-Event = Union[
-    PlanEvent,
-    TitleEvent,
-    StepEvent,
-    MessageEvent,
-    ToolEvent,
-    WaitEvent,
-    ErrorEvent,
-    DoneEvent,
+Event = Annotated[
+    Union[
+        PlanEvent,
+        TitleEvent,
+        StepEvent,
+        MessageEvent,
+        ToolEvent,
+        WaitEvent,
+        ErrorEvent,
+        DoneEvent,
+    ],
+    Field(discriminator="type")
 ]

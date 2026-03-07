@@ -16,7 +16,7 @@ from app.domain.services.prompts.planner import (
     UPDATE_PLAN_PROMPT,
 )
 from app.domain.models.message import Message
-from app.domain.models.event import Event, MessageEvent, PlanEvent, PlanEventStatus
+from app.domain.models.event import Event, MessageEvent, PlanEvent, PlanEventStatus, BaseEvent
 from app.domain.models.plan import Plan, Step
 
 logger = logging.getLogger(__name__)
@@ -46,7 +46,7 @@ class PlannerAgent(BaseAgent):
     _format: Optional[str] = "json_object"
     _tool_choice: Optional[str] = "none"
 
-    async def create_plan(self,message: Message) -> AsyncGenerator[Event, None]:
+    async def create_plan(self,message: Message) -> AsyncGenerator[BaseEvent, None]:
         """根据用户传递的消息创建计划/规划，迭代返回对应的事件"""
         # 1. 根据用户传递的消息生成创建plan的提示词
         query = CREATE_PLAN_PROMPT.format(

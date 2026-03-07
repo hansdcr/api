@@ -7,8 +7,9 @@
 
 from .base import Base
 from .demo import Demo
+from .file import FileModel
 from .session import SessionModel
 
 
 
-__all__ = ["Base","Demo","SessionModel"]
+__all__ = ["Base","Demo","SessionModel","FileModel"]

@@ -4,14 +4,13 @@
 # @Author       :   Gelin
 # @Software     :   PyCharm
 # @File         :   event.py
-import datetime
+
+from datetime import datetime
 import uuid
 
 from enum import Enum
 from pydantic import BaseModel,Field
-from typing import Literal, List, Any, Union, Optional, Dict
-
-from sqlalchemy.sql.annotation import Annotated
+from typing import Literal, List, Any, Union, Optional, Dict, Annotated
 
 from .plan import Plan,Step
 from .file import File
@@ -121,5 +120,5 @@ Event = Annotated[
         ErrorEvent,
         DoneEvent,
     ],
-    Field(discriminator="type")
+    Field(discriminator="type"),
 ]

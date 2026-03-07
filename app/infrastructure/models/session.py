@@ -21,7 +21,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .base import Base
-from ...domain.models.session import Session
+from app.domain.models.session import Session
 
 
 class SessionModel(Base):

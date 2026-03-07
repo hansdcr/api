@@ -45,13 +45,16 @@ class Memory(BaseModel):
         """记忆压缩，将记忆中已经执行的工具(搜索/网页源码获取/浏览器访问结果等)这类已经执行过的消息进行压缩"""
         # 1.循环遍历所有的消息列表
         for message in self.messages:
-            # 2. 判断消息的角色是否是tool
+            # 2.判断消息的角色是否为tool
             if self.get_message_role(message) == "tool":
-                # TODO：工具的名字待定
-                if message.get("function_name") in []:
-                    # TODO: 工具的调用结果待确定
+                if message.get("function_name") in ["browser_view", "browser_navigate"]:
                     message["content"] = "(removed)"
-                    logger.debug(f"从记忆中移除对应工具的结果:{message['function_name']}")
+                    logger.debug(f"从记忆中移除对应工具的结果: {message['function_name']}")
+
+            # 3.压缩记忆时reasoning_content内容可以去除压缩上下文
+            if "reasoning_content" in message:
+                logger.debug(f"从记忆中移除工具思考结果: {message['reasoning_content'][:50]}...")
+                del message["reasoning_content"]
 
     @property
     def empty(self) -> bool:

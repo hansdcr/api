@@ -14,6 +14,7 @@ from typing import Literal, List, Any, Union, Optional, Dict, Annotated
 
 from .plan import Plan,Step
 from .file import File
+from .search import SearchResultItem
 from .tool_result import ToolResult
 
 
@@ -75,12 +76,37 @@ class BrowserToolContent(BaseModel):
     """浏览器工具扩展内容"""
     screenshot: str # 浏览器快照截图
 
+class SearchToolContent(BaseModel):
+    """搜索工具内容"""
+    results: List[SearchResultItem]  # 搜索结果列表
+
+
+class ShellToolContent(BaseModel):
+    """Shell工具内容"""
+    console: Any  # 控制台内容
+
+
+class FileToolContent(BaseModel):
+    """文件工具内容"""
+    content: str  # 文件内容
+
 class MCPToolContent(BaseModel):
     """MCP工具内容"""
     result: Any
 
-# todo: 工具扩展内容等待完善.....
-ToolContent = Union[BrowserToolContent, MCPToolContent]
+class A2AToolContent(BaseModel):
+    """A2A智能体工具内容"""
+    a2a_result: Any  # A2A智能体调用结果
+
+
+ToolContent = Union[
+    BrowserToolContent,
+    SearchToolContent,
+    ShellToolContent,
+    FileToolContent,
+    MCPToolContent,
+    A2AToolContent,
+]
 
 class ToolEvent(BaseEvent):
     """工具事件"""
